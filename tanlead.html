@@ -552,7 +552,7 @@
         totalPV    += pv * qty;
       });
 
-      // 若勾選入會費，總價格增加 1000 元
+      // 若勾選入會費，總價格增加 1000 元（PV 不變）
       const membershipFeeCheckbox = document.querySelector('.membershipFee');
       if (membershipFeeCheckbox.checked) {
         totalPrice += 1000;
@@ -613,27 +613,30 @@
     // 頁面載入時計算一次
     calculate();
 
-    // 點擊「總覽」按鈕後，彈出視窗顯示購物清單
+    // 點擊「總覽」按鈕後，彈出視窗顯示購物清單 (同時包含 PV)
     function showSummary() {
-      let itemList = [];
-      let totalQty   = 0;
-      let totalPrice = 0;
+      let itemList     = [];
+      let totalQty     = 0;
+      let totalPrice   = 0;
+      let totalPV      = 0;
 
       // 收集商品資訊
       document.querySelectorAll('.product-card').forEach(card => {
         const productName = card.querySelector('.product-name').textContent.trim();
         const price       = parseFloat(card.dataset.price) || 0;
+        const pv          = parseFloat(card.dataset.pv)    || 0;
         const qtyInput    = card.querySelector('.qtyInput');
         const qty         = parseInt(qtyInput.value) || 0;
 
         if (qty > 0) {
-          itemList.push(`${productName}*${qty}`);
-          totalQty += qty;
-          totalPrice += (price * qty);
+          itemList.push(`${productName} * ${qty}`);
+          totalQty   += qty;
+          totalPrice += price * qty;
+          totalPV    += pv * qty;
         }
       });
 
-      // 若有勾選入會費，加到 totalPrice，但不算在商品項目
+      // 若有勾選入會費，加到 totalPrice，但不加到 totalPV
       const membershipFeeCheckbox = document.querySelector('.membershipFee');
       let membershipAdded = 0;
       if (membershipFeeCheckbox.checked) {
@@ -658,6 +661,9 @@
 
         // 總件數(不含入會費)
         summaryText += '***商品總件數***\n' + totalQty + '\n';
+
+        // 總 PV
+        summaryText += '***總PV***\n' + totalPV + '\n';
 
         // 總價（含入會費）
         summaryText += '***總價***\n' + totalPrice;
