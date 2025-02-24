@@ -87,16 +87,17 @@
       opacity: 0.9;
     }
 
-    /* 兩欄容器 - 預設桌面版左右佈局 */
+    /* 兩欄容器 - 桌面版預設左右排列 */
     .two-columns {
       display: flex;
       flex-wrap: nowrap;
+      overflow-x: auto;
       gap: 10px;
       margin: 0 10px 20px;
     }
     .column {
       flex: 0 0 50%;        /* 各欄固定佔 50% 寬 */
-      min-width: 300px;     /* 確保欄位最小寬度 */
+      min-width: 300px;     /* 桌面版確保欄位最小寬度 */
       display: flex;
       flex-direction: column;
       gap: 10px;
@@ -179,7 +180,7 @@
       justify-content: center;
       gap: 50px;
       font-size: 22px;
-      z-index: 998; /* 注意要比總覽按鈕略低，免得被蓋住 */
+      z-index: 998;
       align-items: center;
     }
     .footer-item {
@@ -198,14 +199,14 @@
       width: 100vw;
       height: 100vh;
       background: rgba(0,0,0,0.5);
-      display: none;            /* 預設隱藏 */
+      display: none;
       justify-content: center;
       align-items: center;
-      z-index: 1000;            /* 高於其他元素 */
+      z-index: 1000;
       padding: 20px;
     }
     .summary-modal.active {
-      display: flex;           /* 顯示時用 flex 排版置中 */
+      display: flex;
     }
     /* 彈出視窗的內容框 */
     .summary-content {
@@ -215,7 +216,7 @@
       padding: 20px;
       position: relative;
       overflow-y: auto;
-      max-height: 80vh;         /* 超過就可捲動 */
+      max-height: 80vh;
     }
     /* 關閉按鈕 */
     .summary-close-btn {
@@ -235,12 +236,13 @@
     }
     /* 顯示總覽內容時可用 <pre> 來保留換行格式 */
     .summary-text {
-      white-space: pre-wrap; /* 保留換行，並在較長文字自動換行 */
+      white-space: pre-wrap;
       font-size: 20px;
       line-height: 1.5;
     }
 
-    /* 針對手機更小的螢幕，調整字體並改為一欄式排列 */
+    /* 針對手機更小的螢幕：調整字體、按鈕尺寸，
+       並改為兩欄排列且避免左右捲動 */
     @media (max-width: 480px) {
       .product-name {
         font-size: 20px;
@@ -271,16 +273,22 @@
       .summary-content {
         font-size: 18px;
       }
-      /* 將兩欄改為一欄排列 */
+      /* 將兩欄容器改為允許換行，並移除水平捲動 */
       .two-columns {
-        flex-direction: column;
-        overflow-x: visible;
+        flex-wrap: wrap;
+        overflow-x: hidden;
+        margin: 0 5px 20px;
       }
+      /* 移除欄位的最小寬度限制，設定每欄 50% 寬 */
       .column {
-        flex: 1 1 100%;
-        min-width: 0; /* 移除固定最小寬度，避免超出畫面 */
-        border-right: none; /* 移除左欄的分隔線 */
-        padding-right: 0;
+        flex: 0 0 50%;
+        min-width: 0;
+        padding: 0 5px;
+        border-right: none;
+      }
+      /* 如有需要，可讓左側的每一組欄位保留右邊線 */
+      .column:nth-child(odd) {
+        border-right: 1px solid #000;
       }
     }
   </style>
@@ -694,7 +702,6 @@
 
     // 點擊背景關閉視窗
     function closeSummaryByBackground(e) {
-      // 若點擊的目標就是 .summary-modal 本身(而非 .summary-content)，才關閉
       if (e.target.id === 'summaryModal') {
         closeSummary();
       }
