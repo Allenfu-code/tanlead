@@ -87,11 +87,10 @@
       opacity: 0.9;
     }
 
-    /* 兩欄容器 - 可橫向捲動避免小螢幕被截掉 */
+    /* 兩欄容器 - 預設桌面版左右佈局 */
     .two-columns {
       display: flex;
       flex-wrap: nowrap;
-      overflow-x: auto;
       gap: 10px;
       margin: 0 10px 20px;
     }
@@ -102,7 +101,6 @@
       flex-direction: column;
       gap: 10px;
     }
-
     /* 左欄分隔線稍微細一點 */
     .left-column {
       border-right: 2px solid #000;
@@ -242,7 +240,7 @@
       line-height: 1.5;
     }
 
-    /* 針對手機更小的螢幕，可以稍微縮小字體，避免過度超出 */
+    /* 針對手機更小的螢幕，調整字體並改為一欄式排列 */
     @media (max-width: 480px) {
       .product-name {
         font-size: 20px;
@@ -272,6 +270,17 @@
       }
       .summary-content {
         font-size: 18px;
+      }
+      /* 將兩欄改為一欄排列 */
+      .two-columns {
+        flex-direction: column;
+        overflow-x: visible;
+      }
+      .column {
+        flex: 1 1 100%;
+        min-width: 0; /* 移除固定最小寬度，避免超出畫面 */
+        border-right: none; /* 移除左欄的分隔線 */
+        padding-right: 0;
       }
     }
   </style>
