@@ -243,53 +243,25 @@
 
     /* 針對手機更小的螢幕：調整字體、按鈕尺寸，並改為兩欄排列且避免左右捲動 */
     @media (max-width: 480px) {
-      .product-name {
-        font-size: 20px;
-      }
-      .quantity-control button {
-        width: 40px;
-        height: 40px;
-        font-size: 24px;
-      }
-      .quantity-control input.qtyInput {
-        width: 70px;
-        font-size: 20px;
-      }
-      .fixed-footer {
-        font-size: 20px;
-        gap: 30px;
-      }
-      h1 {
-        font-size: 24px;
-      }
-      .membership-section label {
-        font-size: 20px;
-      }
-      .clear-btn,
-      .summary-btn {
-        font-size: 18px;
-      }
-      .summary-content {
-        font-size: 18px;
-      }
-      /* 將兩欄容器改為允許換行，並移除水平捲動 */
-      .two-columns {
-        flex-wrap: wrap;
-        overflow-x: hidden;
-        margin: 0 5px 20px;
-      }
-      /* 移除欄位的最小寬度限制，設定每欄 50% 寬 */
-      .column {
-        flex: 0 0 50%;
-        min-width: 0;
-        padding: 0 5px;
-        border-right: none;
-      }
-      /* 如有需要，可讓左側的每一組欄位保留右邊線 */
-      .column:nth-child(odd) {
-        border-right: 1px solid #000;
-      }
-    }
+  .two-columns {
+    flex-wrap: nowrap; /* 不換行，保持左右排列 */
+    overflow-x: auto; /* 若空間不足，允許橫向捲動 */
+    margin: 0 5px 20px;
+  }
+  .column {
+    flex: 0 0 50%;
+    padding: 0 5px;
+    border-right: none;
+  }
+  /* 指定欄位順序：左欄（有代號產品）在前，右欄（無代號產品）在後 */
+  .left-column {
+    order: 1;
+  }
+  .two-columns .column:not(.left-column) {
+    order: 2;
+  }
+}
+
   </style>
 </head>
 <body>
