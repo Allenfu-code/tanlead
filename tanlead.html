@@ -244,16 +244,17 @@
     /* 針對手機更小的螢幕：調整字體、按鈕尺寸，並改為兩欄排列且避免左右捲動 */
     @media (max-width: 480px) {
   .two-columns {
-    flex-wrap: nowrap; /* 不換行，保持左右排列 */
-    overflow-x: auto; /* 若空間不足，允許橫向捲動 */
+    display: flex;
+    flex-wrap: nowrap;    /* 不換行，保持左右並列 */
+    overflow-x: hidden;   /* 禁止左右滑動 */
     margin: 0 5px 20px;
   }
   .column {
-    flex: 0 0 50%;
+    flex: 1 1 50%;        /* 各欄平均分配寬度 */
     padding: 0 5px;
-    border-right: none;
+    min-width: 0;         /* 取消最小寬度限制，避免超出畫面 */
   }
-  /* 指定欄位順序：左欄（有代號產品）在前，右欄（無代號產品）在後 */
+  /* 指定欄位順序：左側(有代號)在前，右側(無代號)在後 */
   .left-column {
     order: 1;
   }
@@ -261,6 +262,7 @@
     order: 2;
   }
 }
+
 
   </style>
 </head>
