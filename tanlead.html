@@ -244,24 +244,34 @@
     /* 針對手機更小的螢幕：調整字體、按鈕尺寸，並改為兩欄排列且避免左右捲動 */
     @media (max-width: 480px) {
   .two-columns {
-    display: flex;
-    flex-wrap: nowrap;    /* 不換行，保持左右並列 */
-    overflow-x: hidden;   /* 禁止左右滑動 */
-    margin: 0 5px 20px;
+      display: flex;
+      flex-wrap: nowrap;    /* 不換行，保持左右並列 */
+      overflow-x: hidden;   /* 禁止左右滑動 */
+      margin: 0 5px 20px;
+    }
+    .column {
+      flex: 1 1 50%;        /* 各欄平均分配寬度 */
+      padding: 0 5px;
+      min-width: 0;         /* 取消最小寬度限制，避免超出畫面 */
+    }
+    /* 指定欄位順序：左側(有代號)在前，右側(無代號)在後 */
+    .left-column {
+      order: 1;
+    }
+    .two-columns .column:not(.left-column) {
+      order: 2;
+    }
+    .quantity-control button {
+    width: 36px;      /* 調小按鈕寬度 */
+    height: 36px;     /* 調小按鈕高度 */
+    font-size: 20px;  /* 調整字體大小 */
+    margin: 0 4px;    /* 縮減按鈕間距 */
   }
-  .column {
-    flex: 1 1 50%;        /* 各欄平均分配寬度 */
-    padding: 0 5px;
-    min-width: 0;         /* 取消最小寬度限制，避免超出畫面 */
+  .quantity-control input.qtyInput {
+    width: 60px;      /* 調整輸入框寬度 */
+    font-size: 18px;  /* 調整輸入框字體 */
   }
-  /* 指定欄位順序：左側(有代號)在前，右側(無代號)在後 */
-  .left-column {
-    order: 1;
   }
-  .two-columns .column:not(.left-column) {
-    order: 2;
-  }
-}
 
 
   </style>
