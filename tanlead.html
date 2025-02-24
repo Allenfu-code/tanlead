@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <!-- 必須的 viewport 設定，確保手機可正常縮放 -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>天麗產品計算器 (週年慶活動)</title>
+  <title>天麗產品計算器 (週年慶活動 - 滿8送1 疊加)</title>
   <style>
     /* 統一計算模式，避免寬度被 padding/border 擠大 */
     * {
@@ -14,7 +14,7 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      font-size: 20px; /* 調大字體，方便老人家閱讀 */
+      font-size: 20px; /* 調大字體，方便閱讀 */
       background-color: #F8F8F8;
       padding-bottom: 80px; /* 避免內容被底部固定列遮住 */
       position: relative;
@@ -289,7 +289,7 @@
   <h1>天麗產品計算器 (週年慶活動)</h1>
   <p class="desc">
     勾選「入會費」可加收 1000 元；勾選「週年慶」可查看贈品門檻；<br>
-    若購買指定商品滿 8 件，再加贈 1 件同款商品；可直接輸入數字或使用「- / +」來調整數量。
+    若購買指定商品每滿 8 件，加贈同款商品 1 件（可疊加，買 16 送 2...）。
   </p>
 
   <!-- 入會費 + 週年慶 Checkbox -->
@@ -312,7 +312,7 @@
   <!-- 右上角總覽按鈕 -->
   <button class="summary-btn" onclick="showSummary()">總覽</button>
 
-   <!-- 兩欄分區 -->
+ <!-- 兩欄分區 -->
  <div class="two-columns">
   <!-- 左欄：有代號的產品 -->
   <div class="column left-column">
@@ -553,7 +553,7 @@
   </div>
 
   <script>
-    // 建立「若單品 >=8 就送 1 件」的目標清單:
+    // 建立「若單品每滿 8 件，就送 1 件」的目標清單:
     const anniversaryEligibleProducts = [
       "joli青春元素-F",
       "joli亮采元素-L",
@@ -650,7 +650,7 @@
       // 滿 32000  -> 1 + 9
       // 滿 19000  -> 2
       if (totalPV >= 200000) {
-        return '5萬天麗幣 + 嫩白C粉x2';
+        return '5萬天麗幣 + 嫩白C粉x2 + <天麗萬用保養包x2>';
       } else if (totalPV >= 100000) {
         return '2萬天麗幣 + 嫩白C粉x2';
       } else if (totalPV >= 50000) {
@@ -705,20 +705,24 @@
           anniversaryGiftText = pvGift;
         }
 
-        // 再判斷是否有指定商品滿 8 件
+        // 再判斷是否有指定商品每滿 8 件就送 1 件
         let itemGiftList = [];
         cards.forEach(card => {
           const name = card.querySelector('.product-name').textContent.trim();
           const qty  = parseInt(card.querySelector('.qtyInput').value) || 0;
-          // 如果此商品在 anniversaryEligibleProducts 裡，且數量 >=8，就送一件
+
           if (anniversaryEligibleProducts.includes(name) && qty >= 8) {
-            itemGiftList.push(`${name} x1`);
+            // 計算贈品數量 = floor(qty / 8)
+            const freebies = Math.floor(qty / 8);
+            if (freebies > 0) {
+              itemGiftList.push(`${name} x${freebies}`);
+            }
           }
         });
 
-        // 若有多個商品都滿8件，逐一加入
+        // 若有多個商品都達到門檻
         if (itemGiftList.length > 0) {
-          const itemGiftStr = "以下商品單品滿 8 件，再加贈 1 件：\n" + itemGiftList.join("\n");
+          const itemGiftStr = "以下商品每滿 8 件，加贈同款 x1 (可疊加)：\n" + itemGiftList.join("\n");
           // 如果原先 PV 滿額禮字串不空，則換行追加；否則直接賦值
           if (anniversaryGiftText) {
             anniversaryGiftText += "\n\n" + itemGiftStr;
