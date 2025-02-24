@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <!-- 必須的 viewport 設定，確保手機可正常縮放 -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>天麗產品計算器</title>
+  <title>天麗產品計算器 (週年慶活動)</title>
   <style>
     /* 統一計算模式，避免寬度被 padding/border 擠大 */
     * {
@@ -33,7 +33,7 @@
       color: #666;
     }
 
-    /* 入會費區域 */
+    /* 入會費/週年慶 區域 */
     .membership-section {
       text-align: center;
       margin-bottom: 20px;
@@ -42,8 +42,10 @@
       font-size: 22px;
       cursor: pointer;
       user-select: none;
+      margin: 0 10px; 
     }
-    .membershipFee {
+    .membershipFee,
+    .anniversaryOffer {
       width: 24px;
       height: 24px;
       vertical-align: middle;
@@ -91,13 +93,12 @@
     .two-columns {
       display: flex;
       flex-wrap: nowrap;
-      overflow-x: auto;
       gap: 10px;
       margin: 0 10px 20px;
     }
     .column {
-      flex: 0 0 50%;        /* 各欄固定佔 50% 寬 */
-      min-width: 300px;     /* 桌面版確保欄位最小寬度 */
+      flex: 0 0 50%;  
+      min-width: 300px; 
       display: flex;
       flex-direction: column;
       gap: 10px;
@@ -241,50 +242,65 @@
       line-height: 1.5;
     }
 
-    /* 針對手機更小的螢幕：調整字體、按鈕尺寸，並改為兩欄排列且避免左右捲動 */
+    /* 手機 (max-width: 480px) - 保持兩欄且禁止左右滑動，調整按鈕大小 */
     @media (max-width: 480px) {
-  .two-columns {
-      display: flex;
-      flex-wrap: nowrap;    /* 不換行，保持左右並列 */
-      overflow-x: hidden;   /* 禁止左右滑動 */
-      margin: 0 5px 20px;
+      .two-columns {
+        display: flex;
+        flex-wrap: nowrap;    
+        overflow-x: hidden;   
+        margin: 0 5px 20px;
+      }
+      .column {
+        flex: 1 1 50%;        
+        min-width: 0;
+        padding: 0 5px;
+      }
+      .quantity-control button {
+        width: 36px;
+        height: 36px;
+        font-size: 20px;
+        margin: 0 4px;
+      }
+      .quantity-control input.qtyInput {
+        width: 60px;
+        font-size: 18px;
+      }
+      .fixed-footer {
+        font-size: 18px;
+        gap: 30px;
+      }
+      h1 {
+        font-size: 24px;
+      }
+      .membership-section label {
+        font-size: 20px;
+      }
+      .clear-btn,
+      .summary-btn {
+        font-size: 18px;
+      }
+      .summary-content {
+        font-size: 18px;
+      }
     }
-    .column {
-      flex: 1 1 50%;        /* 各欄平均分配寬度 */
-      padding: 0 5px;
-      min-width: 0;         /* 取消最小寬度限制，避免超出畫面 */
-    }
-    /* 指定欄位順序：左側(有代號)在前，右側(無代號)在後 */
-    .left-column {
-      order: 1;
-    }
-    .two-columns .column:not(.left-column) {
-      order: 2;
-    }
-    .quantity-control button {
-    width: 36px;      /* 調小按鈕寬度 */
-    height: 36px;     /* 調小按鈕高度 */
-    font-size: 20px;  /* 調整字體大小 */
-    margin: 0 4px;    /* 縮減按鈕間距 */
-  }
-  .quantity-control input.qtyInput {
-    width: 60px;      /* 調整輸入框寬度 */
-    font-size: 18px;  /* 調整輸入框字體 */
-  }
-  }
-
-
   </style>
 </head>
 <body>
-  <h1>天麗產品計算器</h1>
-  <p class="desc">勾選「入會費」可加收 1000 元；可直接輸入數字或使用「- / +」來調整數量。</p>
+  <h1>天麗產品計算器 (週年慶活動)</h1>
+  <p class="desc">
+    勾選「入會費」可加收 1000 元；勾選「週年慶」可查看贈品門檻；<br>
+    若購買指定商品滿 8 件，再加贈 1 件同款商品；可直接輸入數字或使用「- / +」來調整數量。
+  </p>
 
-  <!-- 入會費 Checkbox -->
+  <!-- 入會費 + 週年慶 Checkbox -->
   <div class="membership-section">
     <label>
       <input type="checkbox" class="membershipFee">
       入會費 (+1000)
+    </label>
+    <label>
+      <input type="checkbox" class="anniversaryOffer">
+      週年慶
     </label>
   </div>
 
@@ -296,222 +312,222 @@
   <!-- 右上角總覽按鈕 -->
   <button class="summary-btn" onclick="showSummary()">總覽</button>
 
-  <!-- 兩欄分區 -->
-  <div class="two-columns">
-    <!-- 左欄：有代號的產品 -->
-    <div class="column left-column">
-      <div class="section-title">有代號的產品</div>
+   <!-- 兩欄分區 -->
+ <div class="two-columns">
+  <!-- 左欄：有代號的產品 -->
+  <div class="column left-column">
+    <div class="section-title">有代號的產品</div>
 
-      <!-- 以下皆為「有代號」的商品 -->
-      <div class="product-card" data-price="1995" data-pv="1700">
-        <div class="product-name">深層潔膚油 (A1)</div>
-        <div class="quantity-control">
-          <button type="button" class="minusBtn">-</button>
-          <input type="number" class="qtyInput" value="0" min="0" step="1">
-          <button type="button" class="plusBtn">+</button>
-        </div>
+    <!-- 以下皆為「有代號」的商品 -->
+    <div class="product-card" data-price="1995" data-pv="1700">
+      <div class="product-name">深層潔膚油 (A1)</div>
+      <div class="quantity-control">
+        <button type="button" class="minusBtn">-</button>
+        <input type="number" class="qtyInput" value="0" min="0" step="1">
+        <button type="button" class="plusBtn">+</button>
       </div>
+    </div>
 
-      <div class="product-card" data-price="1995" data-pv="1700">
-        <div class="product-name">雙效潔顏露 (1)</div>
-        <div class="quantity-control">
-          <button type="button" class="minusBtn">-</button>
-          <input type="number" class="qtyInput" value="0" min="0" step="1">
-          <button type="button" class="plusBtn">+</button>
-        </div>
+    <div class="product-card" data-price="1995" data-pv="1700">
+      <div class="product-name">雙效潔顏露 (1)</div>
+      <div class="quantity-control">
+        <button type="button" class="minusBtn">-</button>
+        <input type="number" class="qtyInput" value="0" min="0" step="1">
+        <button type="button" class="plusBtn">+</button>
       </div>
+    </div>
 
-      <div class="product-card" data-price="1995" data-pv="1700">
-        <div class="product-name">平衡柔膚露 (2)</div>
-        <div class="quantity-control">
-          <button type="button" class="minusBtn">-</button>
-          <input type="number" class="qtyInput" value="0" min="0" step="1">
-          <button type="button" class="plusBtn">+</button>
-        </div>
+    <div class="product-card" data-price="1995" data-pv="1700">
+      <div class="product-name">平衡柔膚露 (2)</div>
+      <div class="quantity-control">
+        <button type="button" class="minusBtn">-</button>
+        <input type="number" class="qtyInput" value="0" min="0" step="1">
+        <button type="button" class="plusBtn">+</button>
       </div>
+    </div>
 
-      <div class="product-card" data-price="3990" data-pv="3500">
-        <div class="product-name">全效緊緻眼霜 (3)</div>
-        <div class="quantity-control">
-          <button type="button" class="minusBtn">-</button>
-          <input type="number" class="qtyInput" value="0" min="0" step="1">
-          <button type="button" class="plusBtn">+</button>
-        </div>
+    <div class="product-card" data-price="3990" data-pv="3500">
+      <div class="product-name">全效緊緻眼霜 (3)</div>
+      <div class="quantity-control">
+        <button type="button" class="minusBtn">-</button>
+        <input type="number" class="qtyInput" value="0" min="0" step="1">
+        <button type="button" class="plusBtn">+</button>
       </div>
+    </div>
 
-      <div class="product-card" data-price="4200" data-pv="3600">
-        <div class="product-name">煥白晶華霜 (4)</div>
-        <div class="quantity-control">
-          <button type="button" class="minusBtn">-</button>
-          <input type="number" class="qtyInput" value="0" min="0" step="1">
-          <button type="button" class="plusBtn">+</button>
-        </div>
+    <div class="product-card" data-price="4200" data-pv="3600">
+      <div class="product-name">煥白晶華霜 (4)</div>
+      <div class="quantity-control">
+        <button type="button" class="minusBtn">-</button>
+        <input type="number" class="qtyInput" value="0" min="0" step="1">
+        <button type="button" class="plusBtn">+</button>
       </div>
+    </div>
 
-      <div class="product-card" data-price="4200" data-pv="3600">
-        <div class="product-name">均衡調理霜 (5)</div>
-        <div class="quantity-control">
-          <button type="button" class="minusBtn">-</button>
-          <input type="number" class="qtyInput" value="0" min="0" step="1">
-          <button type="button" class="plusBtn">+</button>
-        </div>
+    <div class="product-card" data-price="4200" data-pv="3600">
+      <div class="product-name">均衡調理霜 (5)</div>
+      <div class="quantity-control">
+        <button type="button" class="minusBtn">-</button>
+        <input type="number" class="qtyInput" value="0" min="0" step="1">
+        <button type="button" class="plusBtn">+</button>
       </div>
+    </div>
 
-      <div class="product-card" data-price="3990" data-pv="3500">
-        <div class="product-name">亮白防護霜 (6A)</div>
-        <div class="quantity-control">
-          <button type="button" class="minusBtn">-</button>
-          <input type="number" class="qtyInput" value="0" min="0" step="1">
-          <button type="button" class="plusBtn">+</button>
-        </div>
+    <div class="product-card" data-price="3990" data-pv="3500">
+      <div class="product-name">亮白防護霜 (6A)</div>
+      <div class="quantity-control">
+        <button type="button" class="minusBtn">-</button>
+        <input type="number" class="qtyInput" value="0" min="0" step="1">
+        <button type="button" class="plusBtn">+</button>
       </div>
+    </div>
 
-      <div class="product-card" data-price="3990" data-pv="3500">
-        <div class="product-name">潤白防護霜 (6B)</div>
-        <div class="quantity-control">
-          <button type="button" class="minusBtn">-</button>
-          <input type="number" class="qtyInput" value="0" min="0" step="1">
-          <button type="button" class="plusBtn">+</button>
-        </div>
+    <div class="product-card" data-price="3990" data-pv="3500">
+      <div class="product-name">潤白防護霜 (6B)</div>
+      <div class="quantity-control">
+        <button type="button" class="minusBtn">-</button>
+        <input type="number" class="qtyInput" value="0" min="0" step="1">
+        <button type="button" class="plusBtn">+</button>
       </div>
+    </div>
 
-      <div class="product-card" data-price="3990" data-pv="3500">
-        <div class="product-name">賦活菁華霜 (8)</div>
-        <div class="quantity-control">
-          <button type="button" class="minusBtn">-</button>
-          <input type="number" class="qtyInput" value="0" min="0" step="1">
-          <button type="button" class="plusBtn">+</button>
-        </div>
+    <div class="product-card" data-price="3990" data-pv="3500">
+      <div class="product-name">賦活菁華霜 (8)</div>
+      <div class="quantity-control">
+        <button type="button" class="minusBtn">-</button>
+        <input type="number" class="qtyInput" value="0" min="0" step="1">
+        <button type="button" class="plusBtn">+</button>
       </div>
+    </div>
 
-      <div class="product-card" data-price="2415" data-pv="1800">
-        <div class="product-name">保濕修護霜 (9)</div>
-        <div class="quantity-control">
-          <button type="button" class="minusBtn">-</button>
-          <input type="number" class="qtyInput" value="0" min="0" step="1">
-          <button type="button" class="plusBtn">+</button>
-        </div>
+    <div class="product-card" data-price="2415" data-pv="1800">
+      <div class="product-name">保濕修護霜 (9)</div>
+      <div class="quantity-control">
+        <button type="button" class="minusBtn">-</button>
+        <input type="number" class="qtyInput" value="0" min="0" step="1">
+        <button type="button" class="plusBtn">+</button>
       </div>
+    </div>
 
-      <div class="product-card" data-price="3465" data-pv="3000">
-        <div class="product-name">瞬效克麗精純液 (10)</div>
-        <div class="quantity-control">
-          <button type="button" class="minusBtn">-</button>
-          <input type="number" class="qtyInput" value="0" min="0" step="1">
-          <button type="button" class="plusBtn">+</button>
-        </div>
+    <div class="product-card" data-price="3465" data-pv="3000">
+      <div class="product-name">瞬效克麗精純液 (10)</div>
+      <div class="quantity-control">
+        <button type="button" class="minusBtn">-</button>
+        <input type="number" class="qtyInput" value="0" min="0" step="1">
+        <button type="button" class="plusBtn">+</button>
       </div>
+    </div>
 
-      <div class="product-card" data-price="2415" data-pv="1800">
-        <div class="product-name">煥采青春露 (12)</div>
-        <div class="quantity-control">
-          <button type="button" class="minusBtn">-</button>
-          <input type="number" class="qtyInput" value="0" min="0" step="1">
-          <button type="button" class="plusBtn">+</button>
-        </div>
+    <div class="product-card" data-price="2415" data-pv="1800">
+      <div class="product-name">煥采青春露 (12)</div>
+      <div class="quantity-control">
+        <button type="button" class="minusBtn">-</button>
+        <input type="number" class="qtyInput" value="0" min="0" step="1">
+        <button type="button" class="plusBtn">+</button>
       </div>
-    </div><!-- 左欄結束 -->
+    </div>
+  </div><!-- 左欄結束 -->
 
-    <!-- 右欄：無代號的產品 -->
-    <div class="column">
-      <div class="section-title">無代號的產品</div>
+  <!-- 右欄：無代號的產品 -->
+  <div class="column">
+    <div class="section-title">無代號的產品</div>
 
-      <!-- 以下皆為「無代號」的商品 -->
-      <div class="product-card" data-price="2415" data-pv="1800">
-        <div class="product-name">Bio雪肌面膜</div>
-        <div class="quantity-control">
-          <button type="button" class="minusBtn">-</button>
-          <input type="number" class="qtyInput" value="0" min="0" step="1">
-          <button type="button" class="plusBtn">+</button>
-        </div>
+    <!-- 以下皆為「無代號」的商品 -->
+    <div class="product-card" data-price="2415" data-pv="1800">
+      <div class="product-name">Bio雪肌面膜</div>
+      <div class="quantity-control">
+        <button type="button" class="minusBtn">-</button>
+        <input type="number" class="qtyInput" value="0" min="0" step="1">
+        <button type="button" class="plusBtn">+</button>
       </div>
-      <div class="product-card" data-price="3465" data-pv="3000">
-        <div class="product-name">嫩白C粉 (10g)</div>
-        <div class="quantity-control">
-          <button type="button" class="minusBtn">-</button>
-          <input type="number" class="qtyInput" value="0" min="0" step="1">
-          <button type="button" class="plusBtn">+</button>
-        </div>
+    </div>
+    <div class="product-card" data-price="3465" data-pv="3000">
+      <div class="product-name">嫩白C粉 (10g)</div>
+      <div class="quantity-control">
+        <button type="button" class="minusBtn">-</button>
+        <input type="number" class="qtyInput" value="0" min="0" step="1">
+        <button type="button" class="plusBtn">+</button>
       </div>
+    </div>
 
-      <div class="product-card" data-price="29400" data-pv="26000">
-        <div class="product-name">嫩白C粉 (100g)</div>
-        <div class="quantity-control">
-          <button type="button" class="minusBtn">-</button>
-          <input type="number" class="qtyInput" value="0" min="0" step="1">
-          <button type="button" class="plusBtn">+</button>
-        </div>
+    <div class="product-card" data-price="29400" data-pv="26000">
+      <div class="product-name">嫩白C粉 (100g)</div>
+      <div class="quantity-control">
+        <button type="button" class="minusBtn">-</button>
+        <input type="number" class="qtyInput" value="0" min="0" step="1">
+        <button type="button" class="plusBtn">+</button>
       </div>
-      <div class="product-card" data-price="1995" data-pv="1700">
-        <div class="product-name">joli青春元素-F</div>
-        <div class="quantity-control">
-          <button type="button" class="minusBtn">-</button>
-          <input type="number" class="qtyInput" value="0" min="0" step="1">
-          <button type="button" class="plusBtn">+</button>
-        </div>
+    </div>
+    <div class="product-card" data-price="1995" data-pv="1700">
+      <div class="product-name">joli青春元素-F</div>
+      <div class="quantity-control">
+        <button type="button" class="minusBtn">-</button>
+        <input type="number" class="qtyInput" value="0" min="0" step="1">
+        <button type="button" class="plusBtn">+</button>
       </div>
+    </div>
 
-      <div class="product-card" data-price="1995" data-pv="1700">
-        <div class="product-name">joli亮采元素-L</div>
-        <div class="quantity-control">
-          <button type="button" class="minusBtn">-</button>
-          <input type="number" class="qtyInput" value="0" min="0" step="1">
-          <button type="button" class="plusBtn">+</button>
-        </div>
+    <div class="product-card" data-price="1995" data-pv="1700">
+      <div class="product-name">joli亮采元素-L</div>
+      <div class="quantity-control">
+        <button type="button" class="minusBtn">-</button>
+        <input type="number" class="qtyInput" value="0" min="0" step="1">
+        <button type="button" class="plusBtn">+</button>
       </div>
+    </div>
 
-      <div class="product-card" data-price="2625" data-pv="2300">
-        <div class="product-name">纖麗 365</div>
-        <div class="quantity-control">
-          <button type="button" class="minusBtn">-</button>
-          <input type="number" class="qtyInput" value="0" min="0" step="1">
-          <button type="button" class="plusBtn">+</button>
-        </div>
+    <div class="product-card" data-price="2625" data-pv="2300">
+      <div class="product-name">纖麗 365</div>
+      <div class="quantity-control">
+        <button type="button" class="minusBtn">-</button>
+        <input type="number" class="qtyInput" value="0" min="0" step="1">
+        <button type="button" class="plusBtn">+</button>
       </div>
+    </div>
 
-      <div class="product-card" data-price="2625" data-pv="2300">
-        <div class="product-name">纖麗365酵素液S1</div>
-        <div class="quantity-control">
-          <button type="button" class="minusBtn">-</button>
-          <input type="number" class="qtyInput" value="0" min="0" step="1">
-          <button type="button" class="plusBtn">+</button>
-        </div>
+    <div class="product-card" data-price="2625" data-pv="2300">
+      <div class="product-name">纖麗365酵素液S1</div>
+      <div class="quantity-control">
+        <button type="button" class="minusBtn">-</button>
+        <input type="number" class="qtyInput" value="0" min="0" step="1">
+        <button type="button" class="plusBtn">+</button>
       </div>
-      <div class="product-card" data-price="3210" data-pv="2400">
-        <div class="product-name">麗瑞頂級橄欖油</div>
-        <div class="quantity-control">
-          <button type="button" class="minusBtn">-</button>
-          <input type="number" class="qtyInput" value="0" min="0" step="1">
-          <button type="button" class="plusBtn">+</button>
-        </div>
+    </div>
+    <div class="product-card" data-price="3210" data-pv="2400">
+      <div class="product-name">麗瑞頂級橄欖油</div>
+      <div class="quantity-control">
+        <button type="button" class="minusBtn">-</button>
+        <input type="number" class="qtyInput" value="0" min="0" step="1">
+        <button type="button" class="plusBtn">+</button>
       </div>
-      <div class="product-card" data-price="3210" data-pv="2400">
-        <div class="product-name">天麗紅人蔘精華飲</div>
-        <div class="quantity-control">
-          <button type="button" class="minusBtn">-</button>
-          <input type="number" class="qtyInput" value="0" min="0" step="1">
-          <button type="button" class="plusBtn">+</button>
-        </div>
+    </div>
+    <div class="product-card" data-price="3210" data-pv="2400">
+      <div class="product-name">天麗紅人蔘精華飲</div>
+      <div class="quantity-control">
+        <button type="button" class="minusBtn">-</button>
+        <input type="number" class="qtyInput" value="0" min="0" step="1">
+        <button type="button" class="plusBtn">+</button>
       </div>
+    </div>
 
-      <div class="product-card" data-price="3210" data-pv="2200">
-        <div class="product-name">麗穩康奶粉 (20包)</div>
-        <div class="quantity-control">
-          <button type="button" class="minusBtn">-</button>
-          <input type="number" class="qtyInput" value="0" min="0" step="1">
-          <button type="button" class="plusBtn">+</button>
-        </div>
+    <div class="product-card" data-price="3210" data-pv="2200">
+      <div class="product-name">麗穩康奶粉 (20包)</div>
+      <div class="quantity-control">
+        <button type="button" class="minusBtn">-</button>
+        <input type="number" class="qtyInput" value="0" min="0" step="1">
+        <button type="button" class="plusBtn">+</button>
       </div>
-      <div class="product-card" data-price="3210" data-pv="2200">
-        <div class="product-name">麗穩膳奶粉 (20包)</div>
-        <div class="quantity-control">
-          <button type="button" class="minusBtn">-</button>
-          <input type="number" class="qtyInput" value="0" min="0" step="1">
-          <button type="button" class="plusBtn">+</button>
-        </div>
+    </div>
+    <div class="product-card" data-price="3210" data-pv="2200">
+      <div class="product-name">麗穩膳奶粉 (20包)</div>
+      <div class="quantity-control">
+        <button type="button" class="minusBtn">-</button>
+        <input type="number" class="qtyInput" value="0" min="0" step="1">
+        <button type="button" class="plusBtn">+</button>
       </div>
-    </div><!-- 右欄結束 -->
-  </div><!-- .two-columns 結束 -->
+    </div>
+  </div><!-- 右欄結束 -->
+</div><!-- .two-columns 結束 -->
 
   <!-- 固定底部的統計資訊 -->
   <div class="fixed-footer">
@@ -531,12 +547,23 @@
     <div class="summary-content">
       <button class="summary-close-btn" onclick="closeSummary()">關閉</button>
       <div class="summary-text" id="summaryText">
-        <!-- 這裡動態插入購物總覽資訊 -->
+        <!-- 動態插入購物總覽資訊 -->
       </div>
     </div>
   </div>
 
   <script>
+    // 建立「若單品 >=8 就送 1 件」的目標清單:
+    const anniversaryEligibleProducts = [
+      "joli青春元素-F",
+      "joli亮采元素-L",
+      "纖麗 365",
+      "纖麗365酵素液S1",
+      "麗瑞頂級橄欖油",
+      "天麗紅人蔘精華飲",
+      "麗穩康奶粉 (20包)"
+    ];
+
     // 主計算函式
     function calculate() {
       let totalQty   = 0;
@@ -612,18 +639,39 @@
       calculate();
     });
 
-    // 頁面載入時計算一次
+    // 頁面載入時先計算一次
     calculate();
 
-    // 點擊「總覽」按鈕後，彈出視窗顯示購物清單 (同時包含 PV)
+    // 根據 totalPV 判斷該贈送什麼(若有)
+    function getAnniversaryGift(totalPV) {
+      // 滿 200000 -> 5萬天麗幣 + 嫩白C粉x2
+      // 滿 100000 -> 2萬天麗幣 + 嫩白C粉x2
+      // 滿 50000  -> 6A + 9 + 12 + 嫩白C粉
+      // 滿 32000  -> 1 + 9
+      // 滿 19000  -> 2
+      if (totalPV >= 200000) {
+        return '5萬天麗幣 + 嫩白C粉x2';
+      } else if (totalPV >= 100000) {
+        return '2萬天麗幣 + 嫩白C粉x2';
+      } else if (totalPV >= 50000) {
+        return '6A + 9 + 12 + 嫩白C粉';
+      } else if (totalPV >= 32000) {
+        return '1 + 9';
+      } else if (totalPV >= 19000) {
+        return '2';
+      }
+      return '';
+    }
+
+    // 點擊「總覽」按鈕後，彈出視窗顯示購物清單 (同時包含 PV + 週年慶贈送)
     function showSummary() {
       let itemList     = [];
       let totalQty     = 0;
       let totalPrice   = 0;
       let totalPV      = 0;
 
-      // 收集商品資訊
-      document.querySelectorAll('.product-card').forEach(card => {
+      const cards = document.querySelectorAll('.product-card');
+      cards.forEach(card => {
         const productName = card.querySelector('.product-name').textContent.trim();
         const price       = parseFloat(card.dataset.price) || 0;
         const pv          = parseFloat(card.dataset.pv)    || 0;
@@ -646,6 +694,40 @@
         totalPrice += 1000;
       }
 
+      // 週年慶 Checkbox
+      const anniversaryOfferCheckbox = document.querySelector('.anniversaryOffer');
+      let anniversaryGiftText = ''; // 用來彙整所有週年慶相關的贈品 (PV + 單品滿8)
+
+      // 若勾選週年慶，先依 PV 門檻判斷送什麼
+      if (anniversaryOfferCheckbox.checked) {
+        const pvGift = getAnniversaryGift(totalPV);
+        if (pvGift) {
+          anniversaryGiftText = pvGift;
+        }
+
+        // 再判斷是否有指定商品滿 8 件
+        let itemGiftList = [];
+        cards.forEach(card => {
+          const name = card.querySelector('.product-name').textContent.trim();
+          const qty  = parseInt(card.querySelector('.qtyInput').value) || 0;
+          // 如果此商品在 anniversaryEligibleProducts 裡，且數量 >=8，就送一件
+          if (anniversaryEligibleProducts.includes(name) && qty >= 8) {
+            itemGiftList.push(`${name} x1`);
+          }
+        });
+
+        // 若有多個商品都滿8件，逐一加入
+        if (itemGiftList.length > 0) {
+          const itemGiftStr = "以下商品單品滿 8 件，再加贈 1 件：\n" + itemGiftList.join("\n");
+          // 如果原先 PV 滿額禮字串不空，則換行追加；否則直接賦值
+          if (anniversaryGiftText) {
+            anniversaryGiftText += "\n\n" + itemGiftStr;
+          } else {
+            anniversaryGiftText = itemGiftStr;
+          }
+        }
+      }
+
       // 組裝輸出文字
       let summaryText = '';
 
@@ -662,15 +744,20 @@
         }
 
         // 總件數(不含入會費)
-        summaryText += '***商品總件數***\n' + totalQty + '\n';
+        summaryText += '\n***商品總件數***\n' + totalQty + '\n';
 
         // 總 PV
-        summaryText += '***總PV***\n' + totalPV + '\n';
+        summaryText += '\n***總PV***\n' + totalPV + '\n';
 
         // 總價（含入會費）
-        summaryText += '***總價***\n' + totalPrice;
+        summaryText += '\n***總價***\n' + totalPrice;
         if (membershipAdded > 0) {
           summaryText += `  (含入會費 +${membershipAdded})`;
+        }
+
+        // 如勾選週年慶且有贈品，要另外顯示
+        if (anniversaryOfferCheckbox.checked && anniversaryGiftText) {
+          summaryText += `\n\n***週年慶贈品***\n${anniversaryGiftText}`;
         }
       }
 
